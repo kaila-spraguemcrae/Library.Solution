@@ -65,7 +65,7 @@ namespace Library.Controllers
     {
       _db.Entry(author).State = EntityState.Modified;
       _db.SaveChanges();
-      return RedirectToAction("Details", new { id = author.AuthorId });
+      return RedirectToAction("Details", "Authors", new { id = author.AuthorId });
     }
     public ActionResult Delete(int id)
     {
@@ -80,6 +80,38 @@ namespace Library.Controllers
       _db.Authors.Remove(thisAuthor);
       _db.SaveChanges();
       return RedirectToAction("Index");
+    }
+
+    public ActionResult AddBook(int id)
+    {
+      var thisAuthor = _db.Authors.FirstOrDefault(author => author.AuthorId == id);
+      ViewBag.BookId = new SelectList(_db.Books, "BookId", "Title");
+      return View(thisAuthor);
+    }
+
+    [HttpPost]
+    public ActionResult AddBook(Author author, int BookId)
+    {
+      if (BookId !=0)
+      {
+        var returnedJoin = _db.BookAuthor.Any(join => join.AuthorId == author.AuthorId && join.BookId == BookId);
+
+        if(!returnedJoin)
+        {
+        _db.BookAuthor.Add(new BookAuthor() { AuthorId = author.AuthorId, BookId = BookId });
+        }
+      }
+      _db.SaveChanges();
+      return RedirectToAction("Details", new { id = author.AuthorId});
+    }
+  
+    [HttpPost]
+    public ActionResult DeleteBook(int joinId)
+    {
+      var joinEntry = _db.BookAuthor.FirstOrDefault(entry => entry.BookAuthorId == joinId);
+      _db.BookAuthor.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Details", new { id = joinEntry.AuthorId });
     }
   }
 }

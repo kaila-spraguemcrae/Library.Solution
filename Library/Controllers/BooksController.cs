@@ -32,7 +32,7 @@ namespace Library.Controllers
 
     public ActionResult Create()
     {
-      ViewBag.AuthorId = new SelectList((from s in _db.Authors select new { AuthorId = s.AuthorId, FullName = s.AuthorFirstName + " " + s.AuthorMiddleInitialName + " " + s.AuthorLastName }), "AuthorId", "FullName", null);
+      ViewBag.AuthorId = new SelectList((from s in _db.Authors select new { AuthorId = s.AuthorId, FullName = s.AuthorFirstName + " " + s.AuthorLastName }), "AuthorId", "FullName", null);
       return View();
     }
 
@@ -62,7 +62,7 @@ namespace Library.Controllers
     public ActionResult Edit (int id)
     {
       var thisBook = _db.Books.FirstOrDefault(book => book.BookId == id);
-      ViewBag.AuthorId = new SelectList((from s in _db.Authors select new { AuthorId = s.AuthorId, FullName = s.AuthorFirstName + " " + s.AuthorMiddleInitialName + " " + s.AuthorLastName }), "AuthorId", "FullName", null);  
+      ViewBag.AuthorId = new SelectList((from s in _db.Authors select new { AuthorId = s.AuthorId, FullName = s.AuthorFirstName + " " + s.AuthorLastName }), "AuthorId", "FullName", null);  
       return View(thisBook);
     }
 
@@ -90,6 +90,40 @@ namespace Library.Controllers
       _db.Books.Remove(thisBook);
       _db.SaveChanges();
       return RedirectToAction("Index");
+    }
+
+    //Add Author to a particular Book
+    public ActionResult AddAuthor(int id)
+    {
+      var thisBook=_db.Books.FirstOrDefault(books => books.BookId == id);
+      ViewBag.AuthorId = new SelectList((from s in _db.Authors select new { AuthorId = s.AuthorId, FullName = s.AuthorFirstName + " " + s.AuthorLastName }), "AuthorId", "FullName", null); 
+      return View(thisBook); 
+    }
+
+    [HttpPost]
+    public ActionResult AddAuthor(Book book, int AuthorId)
+    {
+      if (AuthorId !=0)
+      {
+        var returnedJoin = _db.BookAuthor
+        .Any(join => join.BookId == book.BookId && join.AuthorId == AuthorId);
+        if (!returnedJoin)
+        {
+          _db.BookAuthor.Add(new BookAuthor(){AuthorId=AuthorId, BookId=book.BookId});
+        }
+      }
+      _db.SaveChanges();
+      return RedirectToAction("Details", "Books", new {id=book.BookId});
+    }
+
+    //Delete Author from a particular Book
+    [HttpPost]
+    public ActionResult DeleteAuthor(int joinId, int BookId)
+    {
+     var joinEntry = _db.BookAuthor.FirstOrDefault(entry => entry.BookAuthorId == joinId);
+     _db.BookAuthor.Remove(joinEntry);
+     _db.SaveChanges();
+     return RedirectToAction("Details", "Books", new{id=BookId}); 
     }
   }
 }

@@ -12,11 +12,20 @@
 <ul>
   @foreach (var join in Model.Authors)
   {
-      <li>@join.Author.AuthorFirstName @join.Author.AuthorMiddleInitialName @join.Author.AuthorLastName</li>
+      <li>@Html.ActionLink($"{@join.Author.AuthorFirstName + " " + @join.Author.AuthorMiddleInitialName + " " + @join.Author.AuthorLastName}", "Details", "Authors", new{id=join.Author.AuthorId}, null)</li>
+      @using (Html.BeginForm("DeleteAuthor", "Books"))
+      {
+          @Html.Hidden("joinId", @join.BookAuthorId)
+          @Html.HiddenFor(model=>model.BookId)
+
+          <input type="submit" value="Delete" />
+      }
   }
 </ul>
+<p>@Html.ActionLink("Add Author to Book", "AddAuthor", new { id = Model.BookId})</p>
 <p>@Html.ActionLink("Edit book", "Edit", new { id = Model.BookId})</p>
 <p>@Html.ActionLink("Delete book", "Delete", new { id = Model.BookId})</p>
 <p>@Html.ActionLink("Back to books", "Index")</p>
+<p>@Html.ActionLink("Back to authors", "Index", "Authors")</p>
 <p>@Html.ActionLink("Home", "Index", "Home")</p>
 

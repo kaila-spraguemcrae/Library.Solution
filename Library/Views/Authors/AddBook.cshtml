@@ -1,0 +1,18 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Author
+
+<h1>Add a Book for @Html.DisplayFor(model => model.AuthorFirstName) @Html.DisplayFor(model => model.AuthorMiddleInitialName) @Html.DisplayFor(model => model.AuthorLastName)</h1>
+<hr />
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.AuthorId)
+
+  @Html.Label("Add Book")
+  @Html.DropDownList("BookId")
+
+  <input type="submit" value="Save" class="btn btn-default">
+}
