@@ -1,0 +1,31 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Author
+
+<h4>Edit this author @Html.DisplayFor(model => model.AuthorFirstName) @Html.DisplayFor(model => model.AuthorMiddleInitialName) @Html.DisplayFor(model => model.AuthorLastName)</h4>
+<hr />
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model =>model.AuthorId)
+
+  @Html.Label("Author First Name")
+  @Html.TextBoxFor(model => model.AuthorFirstName)
+
+  @Html.Label("Author Middle Initial Name")
+  @Html.TextBoxFor(model => model.AuthorMiddleInitialName)
+
+  @Html.Label("Author Last Name")
+  @Html.TextBoxFor(model => model.AuthorLastName)
+
+  @Html.Label("Select Book");
+  @Html.DropDownList("BookId");
+
+  <input type="submit" value="Save" />
+}
+
+<hr />
+<p>@Html.ActionLink("Delete author", "Delete", new { id = Model.AuthorId})</p>
+<p>@Html.ActionLink("Back to author", "Index")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p> 

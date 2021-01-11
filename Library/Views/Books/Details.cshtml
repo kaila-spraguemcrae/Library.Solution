@@ -1,0 +1,22 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Book
+
+<h2>Book Details</h2>
+<hr />
+<h3>Book Title: @Html.DisplayFor(model => model.Title)</h2>
+
+<h4>The book was written by:</h4>
+<ul>
+  @foreach (var join in Model.Authors)
+  {
+      <li>@join.Author.AuthorFirstName @join.Author.AuthorMiddleInitialName @join.Author.AuthorLastName</li>
+  }
+</ul>
+<p>@Html.ActionLink("Edit book", "Edit", new { id = Model.BookId})</p>
+<p>@Html.ActionLink("Delete book", "Delete", new { id = Model.BookId})</p>
+<p>@Html.ActionLink("Back to books", "Index")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p>
+

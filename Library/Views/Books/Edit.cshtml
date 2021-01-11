@@ -1,0 +1,25 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Book
+
+<h4>Edit this book: @Html.DisplayFor(model => model.Title)</h4>
+<hr />
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model =>model.BookId)
+  @Html.LabelFor(model =>model.Title)
+  @Html.EditorFor(model =>model.Title)
+  
+
+  @Html.Label("Select Author");
+  @Html.DropDownList("AuthorId");
+
+  <input type="submit" value="Save" />
+}
+
+<hr />
+<p>@Html.ActionLink("Delete book", "Delete", new { id = Model.BookId})</p>
+<p>@Html.ActionLink("Back to books", "Index")</p>
+<p>@Html.ActionLink("Home", "Index", "Home")</p> 
