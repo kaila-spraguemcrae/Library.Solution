@@ -1,0 +1,31 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models
+@model List<Library.Models.Copy>
+
+<h2>Copies</h2>
+<hr />
+@if (@ViewBag.Model.Count == 0)
+{
+  <h3>This book has no copies</h3>
+}
+else
+{ 
+  <h3>This book has @ViewBag.Counter copies. @ViewBag.CopiesAvailable copies are available.</h3>
+  
+}
+
+  
+@* @{  
+    ViewBag.Title = "Index";  
+}  
+  
+<h3>Passing Data From Controller to View using ViewBag</h3>  
+@{   
+    var data = ViewBag.Model;  
+}  
+<h3>Id: @data.CopyId</h3>  
+<h3>RecordName: @data.BookId</h3>  
+<h3>RecordDetail: @data.RecordDetail</h3>    *@

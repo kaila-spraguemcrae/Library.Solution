@@ -120,11 +120,33 @@ namespace Library.Controllers
     [HttpPost]
     public ActionResult DeleteAuthor(int joinId, int BookId)
     {
-     var joinEntry = _db.BookAuthor.FirstOrDefault(entry => entry.BookAuthorId == joinId);
-     _db.BookAuthor.Remove(joinEntry);
-     _db.SaveChanges();
-     return RedirectToAction("Details", "Books", new{id=BookId}); 
+      var joinEntry = _db.BookAuthor.FirstOrDefault(entry => entry.BookAuthorId == joinId);
+      _db.BookAuthor.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Details", "Books", new{id=BookId}); 
     }
+    public ActionResult AddCopy(int id)
+    {
+      var thisCopy=_db.Copies.FirstOrDefault(copies => copies.CopyId == id);
+      ViewBag.CopyId = new SelectList(_db.Copies, "CopyId", null); 
+      return View(thisCopy); 
+    }
+    [HttpPost]
+    public ActionResult AddAuthor(Book book, int AuthorId)
+    {
+      if (AuthorId !=0)
+      {
+        var returnedJoin = _db.BookAuthor
+        .Any(join => join.BookId == book.BookId && join.AuthorId == AuthorId);
+        if (!returnedJoin)
+        {
+          _db.BookAuthor.Add(new BookAuthor(){AuthorId=AuthorId, BookId=book.BookId});
+        }
+      }
+      _db.SaveChanges();
+      return RedirectToAction("Details", "Books", new {id=book.BookId});
+    }
+
   }
 }
 

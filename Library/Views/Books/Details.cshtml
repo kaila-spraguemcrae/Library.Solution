@@ -22,6 +22,10 @@
       }
   }
 </ul>
+<h3 class="btn btn-default btn-lg"><a href='/Books/@Model.BookId/Copies/'>View available copies</a></h3>  
+
+@* <p>@Html.ActionLink("View available copies", "Index", "$'{Model}'/$'{id}'/Copies", new { id = Model.BookId })</p> *@
+
 <p>@Html.ActionLink("Add Author to Book", "AddAuthor", new { id = Model.BookId})</p>
 <p>@Html.ActionLink("Edit book", "Edit", new { id = Model.BookId})</p>
 <p>@Html.ActionLink("Delete book", "Delete", new { id = Model.BookId})</p>
