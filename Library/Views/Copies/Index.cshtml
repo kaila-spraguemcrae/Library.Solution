@@ -13,19 +13,15 @@
 }
 else
 { 
-  <h3>This book has @ViewBag.Counter copies. @ViewBag.CopiesAvailable copies are available.</h3>
+  <h3>This book has @ViewBag.Counter copy(s). @ViewBag.CopiesAvailable copy(s) are available.</h3>
   
+  @foreach (Copy copy in ViewBag.Model)
+  { 
+  if(copy.BookId == ViewBag.BookId)
+  {
+  <li>@copy.Book.Title @copy.CopyOut</li>
+  }
+  }
 }
 
-  
-@* @{  
-    ViewBag.Title = "Index";  
-}  
-  
-<h3>Passing Data From Controller to View using ViewBag</h3>  
-@{   
-    var data = ViewBag.Model;  
-}  
-<h3>Id: @data.CopyId</h3>  
-<h3>RecordName: @data.BookId</h3>  
-<h3>RecordDetail: @data.RecordDetail</h3>    *@
+

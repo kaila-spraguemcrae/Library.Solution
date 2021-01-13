@@ -29,6 +29,7 @@ namespace Library.Controllers
       int copyOutCounter = 0;
       int copiesAvailable = 0;
       List<Copy> model = _db.Copies.Include(copies => copies.Book).ToList();
+       /// .ThenInclude(book=>book.BookId==BookId).ToList();
       foreach (Copy copy in model)
       {
         if (copy.BookId == BookId)
@@ -40,23 +41,27 @@ namespace Library.Controllers
           }
         }
       }
-      copiesAvailable = counter - copyOutCounter;
+      ViewBag.CopiesAvailable = counter - copyOutCounter;
       ViewBag.Model = model; 
       ViewBag.Counter = counter; 
-      ViewBag.CopiesAvailable = copiesAvailable;
+      ViewBag.BookId = BookId;
       return View();
+      
+
+    }
+
+    [HttpGet("/books/{BookId}/copies/create")]
+    public ActionResult Create(int BookId)
+    {
+      ViewBag.BookId = new SelectList(_db.Books, "BookId", "Title");
+      return View();
+    }
+    [HttpPost("/books/{BookId}/copies/create")]
+    public ActionResult Create(Copy copy, int BookId)
+    {
+      _db.Copies.Add(copy);
+      _db.SaveChanges();
+      return RedirectToAction("Details", "Books", new { id = BookId});
     }
   }
 } 
-// void Application_Start(object sender, EventArgs e) 
-// {
-//     RegisterRoutes(RouteTable.Routes);
-// }
-// public static void RegisterRoutes(RouteCollection routes)
-// {
-//     Route reportRoute = new Route("{locale}/{year}", new ReportRouteHandler());
-//     reportRoute.Defaults = new RouteValueDictionary { { "locale", "en-US" }, { "year", DateTime.Now.Year.ToString() } };
-//     reportRoute.Constraints = new RouteValueDictionary { { "locale", "[a-z]{2}-[a-z]{2}" }, { "year", @"\d{4}" } };
-//     reportRoute.DataTokens = new RouteValueDictionary { { "format", "short" } };
-//     routes.Add(reportRoute);
-// }

@@ -1,0 +1,18 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Copy
+
+<h4>Add a new copy</h4>
+
+@using (Html.BeginForm())
+{
+  @Html.Label("Select Book")
+  @Html.DropDownList("BookId")
+
+  @Html.Label("Copy Out")
+  @Html.CheckBoxFor(model => model.CopyOut)
+
+  <input type="submit" value="create new copy" class="btn btn-default" />
+}

@@ -42,6 +42,7 @@ namespace Library.Controllers
       // var userId = this._userManager.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       // var currentUser = await _userManager.FindByIdAsync(userId);
       _db.Books.Add(book);
+      
       if (AuthorId != 0)
       {
         _db.BookAuthor.Add(new BookAuthor() { AuthorId = AuthorId, BookId = book.BookId });
@@ -125,27 +126,26 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Details", "Books", new{id=BookId}); 
     }
-    public ActionResult AddCopy(int id)
-    {
-      var thisCopy=_db.Copies.FirstOrDefault(copies => copies.CopyId == id);
-      ViewBag.CopyId = new SelectList(_db.Copies, "CopyId", null); 
-      return View(thisCopy); 
-    }
-    [HttpPost]
-    public ActionResult AddAuthor(Book book, int AuthorId)
-    {
-      if (AuthorId !=0)
-      {
-        var returnedJoin = _db.BookAuthor
-        .Any(join => join.BookId == book.BookId && join.AuthorId == AuthorId);
-        if (!returnedJoin)
-        {
-          _db.BookAuthor.Add(new BookAuthor(){AuthorId=AuthorId, BookId=book.BookId});
-        }
-      }
-      _db.SaveChanges();
-      return RedirectToAction("Details", "Books", new {id=book.BookId});
-    }
+    // public ActionResult AddCopy(int id)
+    // {
+    //   var thisCopy=_db.Copies.FirstOrDefault(copies => copies.CopyId == id);
+    //   ViewBag.CopyId = new SelectList(_db.Copies, "CopyId", null); 
+    //   return View(thisCopy); 
+    // }
+    // [HttpPost]
+    // public ActionResult AddCopy(Copy copy, int BookId)
+    // {
+        // _db.Copies.Add(copy)
+    //   if (BookId !=0)
+    //   {
+        
+    //     {
+    //       _db.BookAuthor.Add(new BookAuthor(){AuthorId=AuthorId, BookId=book.BookId});
+    //     }
+    //   }
+    //   _db.SaveChanges();
+    //   return RedirectToAction("Details", "Books", new {id=book.BookId});
+    // }
 
   }
 }
