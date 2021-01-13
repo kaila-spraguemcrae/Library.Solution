@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Library.Controllers
 {
-  [Authorize]
+  
   public class AuthorsController : Controller
   {
     private readonly LibraryContext _db;
@@ -25,7 +25,7 @@ namespace Library.Controllers
     {
       return View(_db.Authors.ToList());
     }
-
+    [Authorize]
     public ActionResult Create()
     {
       ViewBag.BookId = new SelectList(_db.Books, "BookId", "Title");
@@ -52,7 +52,7 @@ namespace Library.Controllers
         .FirstOrDefault(author => author.AuthorId == id);
       return View(thisAuthor);
     }
-
+    [Authorize]
     public ActionResult Edit (int id)
     {
       var thisAuthor = _db.Authors.FirstOrDefault(author => author.AuthorId == id);
@@ -67,6 +67,8 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Details", "Authors", new { id = author.AuthorId });
     }
+
+    [Authorize]
     public ActionResult Delete(int id)
     {
       var thisAuthor = _db.Authors.FirstOrDefault(author => author.AuthorId == id);

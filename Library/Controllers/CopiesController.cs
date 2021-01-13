@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Library.Controllers
 {
-  [Authorize]
+  
   public class CopiesController : Controller
   {
     private readonly LibraryContext _db;
@@ -27,7 +27,7 @@ namespace Library.Controllers
     {
       int counter = 0;
       int copyOutCounter = 0;
-      int copiesAvailable = 0;
+      //int CopiesAvailable = 0;
       List<Copy> model = _db.Copies.Include(copies => copies.Book).ToList();
        /// .ThenInclude(book=>book.BookId==BookId).ToList();
       foreach (Copy copy in model)
@@ -46,22 +46,30 @@ namespace Library.Controllers
       ViewBag.Counter = counter; 
       ViewBag.BookId = BookId;
       return View();
-      
-
     }
-
+    [Authorize]
     [HttpGet("/books/{BookId}/copies/create")]
     public ActionResult Create(int BookId)
     {
       ViewBag.BookId = new SelectList(_db.Books, "BookId", "Title");
       return View();
     }
+
     [HttpPost("/books/{BookId}/copies/create")]
     public ActionResult Create(Copy copy, int BookId)
     {
       _db.Copies.Add(copy);
       _db.SaveChanges();
       return RedirectToAction("Details", "Books", new { id = BookId});
+    }
+    [Authorize]
+    [HttpPost("books/{BookId}/copies")]
+    public ActionResult DeleteCopy(int CopyId)//, int BookId)
+    {
+      Copy thisCopy = _db.Copies.FirstOrDefault(copy => copy.CopyId == CopyId);
+      _db.Copies.Remove(thisCopy);
+      _db.SaveChanges();
+      return RedirectToAction("Index");//Details", "Books", new { id = BookId});
     }
   }
 } 

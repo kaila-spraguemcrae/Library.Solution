@@ -3,7 +3,7 @@
 }
 
 @using Library.Models
-@model List<Library.Models.Copy>
+@model Library.Models.Copy
 
 <h2>Copies</h2>
 <hr />
@@ -17,10 +17,17 @@ else
   
   @foreach (Copy copy in ViewBag.Model)
   { 
-  if(copy.BookId == ViewBag.BookId)
-  {
-  <li>@copy.Book.Title @copy.CopyOut</li>
-  }
+    if(copy.BookId == ViewBag.BookId)
+    {
+      <li>@copy.Book.Title @copy.CopyOut</li>
+      @using (Html.BeginForm("DeleteCopy", "Copies"))
+      {
+      @Html.Hidden("CopyId", @copy.CopyId)
+      @Html.HiddenFor(model => copy.CopyId)
+
+      <input type="submit" value="Delete" />
+      }
+    }
   }
 }
 

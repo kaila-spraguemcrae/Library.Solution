@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Library.Controllers
 {
-  [Authorize]
+  // [Authorize]
   public class BooksController : Controller
   {
     private readonly LibraryContext _db;
@@ -30,6 +30,7 @@ namespace Library.Controllers
       return View(model);
     }
 
+    [Authorize]
     public ActionResult Create()
     {
       ViewBag.AuthorId = new SelectList((from s in _db.Authors select new { AuthorId = s.AuthorId, FullName = s.AuthorFirstName + " " + s.AuthorLastName }), "AuthorId", "FullName", null);
@@ -59,7 +60,7 @@ namespace Library.Controllers
         .FirstOrDefault(book => book.BookId == id);
       return View(thisBook);
     }
-
+    [Authorize]
     public ActionResult Edit (int id)
     {
       var thisBook = _db.Books.FirstOrDefault(book => book.BookId == id);
@@ -78,6 +79,7 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = book.BookId });
     }
+    [Authorize]
     public ActionResult Delete(int id)
     {
       var thisBook = _db.Books.FirstOrDefault(book => book.BookId == id);
@@ -92,7 +94,7 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
-
+    [Authorize]
     //Add Author to a particular Book
     public ActionResult AddAuthor(int id)
     {
@@ -116,7 +118,7 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Details", "Books", new {id=book.BookId});
     }
-
+    [Authorize]
     //Delete Author from a particular Book
     [HttpPost]
     public ActionResult DeleteAuthor(int joinId, int BookId)
