@@ -21,10 +21,12 @@ namespace Library.Controllers
       _userManager = userManager;
       _db = db;
     }
+    
     public ActionResult Index()
     {
       return View(_db.Authors.ToList());
     }
+
     [Authorize]
     public ActionResult Create()
     {
@@ -52,6 +54,7 @@ namespace Library.Controllers
         .FirstOrDefault(author => author.AuthorId == id);
       return View(thisAuthor);
     }
+
     [Authorize]
     public ActionResult Edit (int id)
     {
@@ -84,6 +87,7 @@ namespace Library.Controllers
       return RedirectToAction("Index");
     }
 
+    [Authorize]
     public ActionResult AddBook(int id)
     {
       var thisAuthor = _db.Authors.FirstOrDefault(author => author.AuthorId == id);
@@ -106,7 +110,8 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = author.AuthorId});
     }
-  
+
+    [Authorize]
     [HttpPost]
     public ActionResult DeleteBook(int joinId)
     {

@@ -128,27 +128,19 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Details", "Books", new{id=BookId}); 
     }
-    // public ActionResult AddCopy(int id)
-    // {
-    //   var thisCopy=_db.Copies.FirstOrDefault(copies => copies.CopyId == id);
-    //   ViewBag.CopyId = new SelectList(_db.Copies, "CopyId", null); 
-    //   return View(thisCopy); 
-    // }
-    // [HttpPost]
-    // public ActionResult AddCopy(Copy copy, int BookId)
-    // {
-        // _db.Copies.Add(copy)
-    //   if (BookId !=0)
-    //   {
-        
-    //     {
-    //       _db.BookAuthor.Add(new BookAuthor(){AuthorId=AuthorId, BookId=book.BookId});
-    //     }
-    //   }
-    //   _db.SaveChanges();
-    //   return RedirectToAction("Details", "Books", new {id=book.BookId});
-    // }
+    
+    public ActionResult SearchByTitle()
+    {
+      return View();
+    }
+
+    [HttpPost]
+    public ActionResult SearchByTitle(string SearchItem)
+    {
+      Book thisBook = _db.Books.Where(books => books.Title).Contains(SearchItem);
+      ViewBag.AuthorId = new SelectList((from s in _db.Authors select new { AuthorId = s.AuthorId, FullName = s.AuthorFirstName + " " + s.AuthorLastName }), "AuthorId", "FullName", null); 
+      return RedirectToAction("SearchByTitle");
+    }
 
   }
 }
-

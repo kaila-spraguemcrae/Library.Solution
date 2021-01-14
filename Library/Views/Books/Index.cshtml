@@ -3,7 +3,7 @@
 }
 
 @using Library.Models;
-@model List<Library.Models.Book>;
+@model Library.Models.Book;
 
   <h1>Books</h1>
 
@@ -16,6 +16,16 @@
   {
     <li>@Html.ActionLink($"{book.Title}", "Details", new { id = book.BookId })</li>
   }
+
+<h4>Search the bool by title</h4>
+
+@using (Html.BeginForm("SearchByTitle", "Books"))
+{
+    @Html.Label("Title")
+    @Html.TextBox("SearchItem")
+
+    <input type="submit" value="Search By Title" />
+}
 
 <p>@Html.ActionLink("Add new book", "Create")</p>
 <p>@Html.ActionLink("Author Directory", "Index", "Authors")</p>
